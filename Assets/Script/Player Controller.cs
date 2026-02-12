@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     string nowAnime = "";
     string oldAnime = "";
 
+    public int score = 0; //スコア
 
     void Start()
     {
@@ -132,6 +133,18 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.tag == "Dead")
         {
             GameOver();//ゲームオーバー
+        }
+        {
+            // スコアアイテム
+            ScoreItem item = collision.gameObject.GetComponent<ScoreItem>();  // ScoreItemを得る			
+            score = item.itemDeta.value;                // スコアを得る
+            UIController ui = Object.FindFirstObjectByType<UIController>();      // UIControllerを探す
+            if (ui != null)
+            {
+                ui.UpdateScore(score);                  // スコア表示を更新する
+            }
+            score = 0; //次に備えてスコアをリセット
+            Destroy(collision.gameObject);              // アイテム削除する
         }
     }
     //ゴール

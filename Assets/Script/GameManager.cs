@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
 
     public string nextSceneName;            // 次のシーン名
 
+    //スコア追加
+    public static int totalScore;          //  合計スコア
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
