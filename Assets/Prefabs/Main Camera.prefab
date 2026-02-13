@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   camLeft: 0
-  camRight: 53.9
+  camRight: 43.9
   camTop: 0
   camBottom: 0
   subBack1: {fileID: 4749344049331494356}

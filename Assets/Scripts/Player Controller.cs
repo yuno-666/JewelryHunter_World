@@ -128,16 +128,17 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Goal")
         {
-            Goal();//ゴール!
+            Goal();         // ゴール！！
         }
         else if (collision.gameObject.tag == "Dead")
         {
-            GameOver();//ゲームオーバー
+            GameOver();     // ゲームオーバー
         }
+        else if (collision.gameObject.tag == "ScoreItem")
         {
             // スコアアイテム
             ScoreItem item = collision.gameObject.GetComponent<ScoreItem>();  // ScoreItemを得る			
-            score = item.itemDeta.value;                // スコアを得る
+            score = item.itemdeta.value;                // スコアを得る
             UIController ui = Object.FindFirstObjectByType<UIController>();      // UIControllerを探す
             if (ui != null)
             {
