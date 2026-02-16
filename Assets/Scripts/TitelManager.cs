@@ -16,8 +16,10 @@ public class TitelManager : MonoBehaviour
         
     }
 
+    // シーンを読み込むメソッド
     public void Load()
     {
+        GameManager.totalScore = 0; //新しいゲームを始めるにあたってスコアをリセット
         SceneManager.LoadScene(sceneName);
     }
 }

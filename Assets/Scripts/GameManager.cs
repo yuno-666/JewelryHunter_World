@@ -22,13 +22,21 @@ public class GameManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameState = GameState.InGame;
+        gameState = GameState.InGame; //ステータスをゲーム中にする
 
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        if (gameState == GameState.GameClear)
+        {
+            gameState = GameState.GameEnd; //ゲームの状態を更新
+        }
+        else if (gameState == GameState.GameOver)
+        {
+            gameState = GameState.GameEnd; //ゲームの状態を更新
+        }
 
     }
 
