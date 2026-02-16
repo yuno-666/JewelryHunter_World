@@ -19,10 +19,18 @@ public class GameManager : MonoBehaviour
     //スコア追加
     public static int totalScore;          //  合計スコア
 
+    //サウンド関連
+    AudioSource soundPlayer; //AudioSource
+    public AudioClip meGameClear;    // ゲームクリアの音
+    public AudioClip meGameOver;     // ゲームオーバーの音
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         gameState = GameState.InGame; //ステータスをゲーム中にする
+
+        soundPlayer = GetComponent<AudioSource>(); //AudioSourceを参照する
 
     }
 
@@ -31,10 +39,15 @@ public class GameManager : MonoBehaviour
     {
         if (gameState == GameState.GameClear)
         {
+            soundPlayer.Stop(); //音を止める
+            soundPlayer.PlayOneShot(meGameClear); //ゲームクリアの音を1回鳴らす
+
             gameState = GameState.GameEnd; //ゲームの状態を更新
         }
         else if (gameState == GameState.GameOver)
         {
+            soundPlayer.Stop(); //音を止める
+            soundPlayer.PlayOneShot(meGameOver); //ゲームオーバーの音を1回鳴らす
             gameState = GameState.GameEnd; //ゲームの状態を更新
         }
 
