@@ -314,32 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01ce1a9a4e32c646b776b8cd6242c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitelManager
-  sceneName: Base
-  submitAction:
-    m_Name: Submit
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b0e8f369-27b5-4b47-824a-a013917ffa27
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 4890df22-d9d5-4513-971d-0081f28b68ce
-      m_Path: <Keyboard>/enter
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Submit
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 640ec30e-39b9-4738-af4d-089d9ee8f288
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Submit
-      m_Flags: 0
-    m_Flags: 0
+  sceneName: Stage1
 --- !u!114 &239344835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +342,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 272f6d14-89ba-496f-b7ff-215263d3219f
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &779509238
