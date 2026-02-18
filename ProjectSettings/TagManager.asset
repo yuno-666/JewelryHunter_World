@@ -8,6 +8,8 @@ TagManager:
   - Dead
   - ScoreItem
   - Switch
+  - Entrance
+  - WorldUI
   layers:
   - Default
   - TransparentFX

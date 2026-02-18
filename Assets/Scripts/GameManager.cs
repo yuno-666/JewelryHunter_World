@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     //ワールドマップで最後に入ったドアの番号
     public static int currentDoorNumber=0;
     
-    public static int keys = 0; //鍵の数
+    public static int keys = 1; //鍵の数
     
     //どのステージで鍵を取ったかの判定
     public static Dictionary<string, bool> keyGot; //シーン名、true,false

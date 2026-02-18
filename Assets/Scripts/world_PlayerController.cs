@@ -8,14 +8,26 @@ public enum Direction
     right
 }
 
-public class world_PlayerController : MonoBehaviour
+public class World_PlayerController : MonoBehaviour
 {
     public float speed = 3.0f; //移動速度
 
-    Vector2 moveVec = Vector2.zero;//Inputsystemからの入力値
+     Vector2 moveVec = Vector2.zero; //InputSystemからの入力値
     float angleZ;//Playerの向き
     Rigidbody2D rbody;
     Animator animator;
+
+    bool isActionButtonPressed;//ActionButtonが押されたらtrue
+    public bool IsActionButtonPressed//同名の変数のプロパティ
+    {
+        get { return isActionButtonPressed; }
+        set { isActionButtonPressed = value; }
+    }
+
+    void OnActionButton(InputValue value)
+    {
+        IsActionButtonPressed = value.isPressed; // ボタンが押され続けている間はtrue
+    }
 
     //Inputsystemの入力値を変数moveVecにVector2形式で代入
     void OnMove(InputValue value)
@@ -73,7 +85,7 @@ public class world_PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector2(1, 1);//絵はそのまま
         }
-        else　if (dir == Direction.left)
+        else if (dir == Direction.left)
         {
             transform.localScale = new Vector2(-1, 1);//絵を逆転
         }
