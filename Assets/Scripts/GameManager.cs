@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,13 +28,34 @@ public class GameManager : MonoBehaviour
     public bool isGameClear = false; //ゲームクリア判定
     public bool isGameOver = false;//ゲーム終了判定
 
+    //ワールドマップで最後に入ったドアの番号
+    public static int currentDoorNumber=0;
+    
+    public static int keys = 0; //鍵の数
+    
+    //どのステージで鍵を取ったかの判定
+    public static Dictionary<string, bool> keyGot; //シーン名、true,false
+
+    public static int arrows = 10; //矢の数
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         gameState = GameState.InGame; //ステータスをゲーム中にする
 
         soundPlayer = GetComponent<AudioSource>(); //AudioSourceを参照する
+
+        //keyGotが何もない状態だった時のみ初期化
+        if (keyGot == null) 
+        {
+            keyGot = new Dictionary<string, bool>(); //keyGotを初期化する
+        }
+
+        if (!keyGot.ContainsKey(SceneManager.GetActiveScene().name)) //現在のシーン名がkeyGotに登録されてなければ
+        {
+            //現在のシーン名をDictionary(keyGot)に登録する
+            keyGot.Add(SceneManager.GetActiveScene().name, false); 
+        }
 
     }
 
