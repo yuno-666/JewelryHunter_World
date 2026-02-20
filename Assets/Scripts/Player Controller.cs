@@ -33,10 +33,34 @@ public class PlayerController : MonoBehaviour
 
     public int score = 0; //スコア
 
-    InputAction moveAction;
-    InputAction jumpAction;
-    PlayerInput input;
-    GameManager gm;
+    InputAction moveAction;//moveアクション
+    InputAction jumpAction;//jumpアクション
+    PlayerInput input;//PlayerInputコンポーネント
+    GameManager gm;//GameManagerスクリプト
+
+    public static int playerLife = 10; //プレイヤーの体力
+
+    bool inDamage = false; //ダメージ管理フラグ
+
+    //PlayerLifeの回復メソッド
+    public static void PlayerRecovery(int life)
+    {
+        playerLife += life; //プレイヤーの体力を回復する
+        if (playerLife > 10)//プレイヤーの体力が10を超えないようにする
+        {
+            playerLife = 10;
+        }
+
+    }
+
+    static public void playerDamage(int damage)
+    {
+        playerLife -= damage;
+        if (playerLife < 0)
+        {
+            playerLife = 0;
+        }
+    }
 
     void OnMove(InputValue value)
     {
@@ -63,6 +87,9 @@ public class PlayerController : MonoBehaviour
         nowAnime = stopAnime;                       // 停止から開始する
         oldAnime = stopAnime;                       // 停止から開始する
 
+        playerLife = 10; //プレイヤーの体力を10にする
+
+
         input = GetComponent<PlayerInput>();       // PlayerInput を取ってくる
         moveAction = input.currentActionMap.FindAction("Move"); // Move アクションを取得
         jumpAction = input.currentActionMap.FindAction("Jump"); // Jump アクション取得
@@ -80,19 +107,38 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.gameState != GameState.InGame)
+        if (GameManager.gameState != GameState.InGame || inDamage)
         {
-            return;
+            //もしダメージ管理フラグが立っていたら点滅処理
+            if (inDamage)
+            {
+                float val = Mathf.Sin(Time.time * 50);
+                if (val > 0)
+                {
+
+
+                    //Sin関数の角度に経過時間（一定リズムの値）を与えると等間隔でプラスマイの結果が得られる
+
+                    GetComponent<SpriteRenderer>().enabled = true;
+                }
+                //等間隔でかわっているであろうValのをチェックし。プラスなら表示、マイナスなら非表示にする
+                else
+                {
+                    GetComponent<SpriteRenderer>().enabled = false;
+                }
+
+            }
+            return;//Updeteを中断
         }
 
 
 
         //地上判定
         onGround = Physics2D.CircleCast(transform.position,//発射位置
-            0.2f,//円の半径
-            Vector2.down,//発射方向
-            0.0f,//発射距離
-            groundLayer);//検出するレイヤー
+                0.2f,//円の半径
+                Vector2.down,//発射方向
+                0.0f,//発射距離
+                groundLayer);//検出するレイヤー
 
         //if (Input.GetButtonDown("Jump"))//キャラクターをジャンプさせる
         //{
@@ -117,7 +163,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (axisH < 0.0f)
         {
-            //Debug.Log("左おされている")
+            //Debug.Log("左おされている");
             transform.localScale = new Vector2(-1, 1); // 左右反転させる
         }
 
@@ -149,10 +195,11 @@ public class PlayerController : MonoBehaviour
 
 
 
+
     private void FixedUpdate()
     {
-
-        if (GameManager.gameState != GameState.InGame)
+        //ゲームステータスがInGameでない、もしくはダメージ管理がtrue
+        if (GameManager.gameState != GameState.InGame || inDamage)
         {
             return;
         }
@@ -167,8 +214,6 @@ public class PlayerController : MonoBehaviour
             rbody.AddForce(jumpPw, ForceMode2D.Impulse);//瞬間的な力を加える
             goJump = false;//ジャンプフラグをおろす
         }
-
-
     }
     //接触
 
@@ -194,6 +239,14 @@ public class PlayerController : MonoBehaviour
             }
             score = 0; //次に備えてスコアをリセット
             Destroy(collision.gameObject);              // アイテム削除する
+        }
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            if (!inDamage) //ダメージ中でなければ
+            {
+                GetDamage(collision.gameObject);
+
+            }
         }
     }
     //ゴール
@@ -243,5 +296,36 @@ public class PlayerController : MonoBehaviour
     public float GetAxisH()
     {
         return axisH;
+    }
+    //ダメージメソッド
+    void GetDamage(GameObject target)
+    {
+        //プレイ中のみ発動
+        if (GameManager.gameState == GameState.InGame)
+        {
+            playerLife -= 1;//体力減少
+            if (playerLife > 0)//まだゲームオーバーじゃなければ
+            {
+                //相手と反対方向にノックバック
+                rbody.linearVelocity = new Vector2(0, 0);
+                Vector3 v = (transform.position - target.transform.position).normalized;
+                rbody.AddForce(new Vector2(v.x * 4, v.y * 4), ForceMode2D.Impulse);
+                //ダメージ管理フラグを立てる
+                inDamage = true;
+                //時間差でダメージ管理フラグを下ろす
+                Invoke("DamageEnd", 0.25f);
+            }
+            else//PlayerLifeが0以下になったら
+            {
+                GameOver();
+            }
+        }
+
+    }
+    void DamageEnd()
+    {
+        inDamage = false;
+        //ダメージ終了（点滅終了）と同時に確実に姿を表示させる
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 }

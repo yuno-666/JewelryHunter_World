@@ -10,6 +10,9 @@ TagManager:
   - Switch
   - Entrance
   - WorldUI
+  - Enemy
+  - Item
+  - ItemBox
   layers:
   - Default
   - TransparentFX

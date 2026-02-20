@@ -12,7 +12,7 @@ public class World_PlayerController : MonoBehaviour
 {
     public float speed = 3.0f; //ˆÚ“®‘¬“x
 
-     Vector2 moveVec = Vector2.zero; //InputSystem‚©‚ç‚Ì“ü—Í’l
+    Vector2 moveVec = Vector2.zero; //InputSystem‚©‚ç‚Ì“ü—Í’l
     float angleZ;//Player‚ÌŒü‚«
     Rigidbody2D rbody;
     Animator animator;
