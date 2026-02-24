@@ -51,6 +51,7 @@ public class EntranceController : MonoBehaviour
                     SceneManager.LoadScene(sceneName);
                     return;
                 }
+
                 //未開錠の場合
                 else if (GameManager.keys > 0)//鍵を持っている場合
                 {
@@ -60,6 +61,8 @@ public class EntranceController : MonoBehaviour
                     //World_UIControllerが所持する開錠の帳簿（keyOpenedディクショナリー）に開錠したことを記録する
                     World_UIController.keyOpened[doorNumber] = true;
                     announcement = true;//アナウンス中フラグ
+
+                    SaveDateManager.SaveGamedata();//鍵を開けたらオートセーブ
                 }
                 else//未開錠かつ鍵を持っていない場合   
                 {

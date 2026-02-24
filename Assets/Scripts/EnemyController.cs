@@ -57,8 +57,11 @@ public class EnemyController : MonoBehaviour
             float val = Mathf.Sin(Time.time * 50);
             if (val > 0)
             {
-                GetComponent<SpriteRenderer>().enabled = true;            }            else //負なら非表示
-            {                GetComponent<SpriteRenderer>().enabled = false;
+                GetComponent<SpriteRenderer>().enabled = true;
+            }
+            else //負なら非表示
+            {
+                GetComponent<SpriteRenderer>().enabled = false;
             }
         }
     }
