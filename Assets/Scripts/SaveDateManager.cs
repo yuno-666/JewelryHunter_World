@@ -43,8 +43,8 @@ public class SaveDateManager : MonoBehaviour
         PlayerPrefs.SetString("SaveData", jsonData); //セッティング
         PlayerPrefs.Save(); //変更を書き込む
 
-        Debug.Log("セーブしました：" + jsonData);
-        Debug.Log(GameManager.keyGot);
+        //Debug.Log("セーブしました：" + jsonData);
+        //Debug.Log(GameManager.keyGot);
     }
 
     // PlayerPrefsからJSONをロードし、ゲームデータに適用するメソッド
@@ -149,6 +149,13 @@ public class KeyGotEntry
 // GamaManager.keyGotをList型で管理するためのクラス
 [System.Serializable]
 public class KeyOpenedEntry
+{
+    public int doorNumber;
+    public bool opened;
+}
+// Entrance.stagesClearをList型で管理するためのクラス
+[System.Serializable]
+public class StagesClearEntry
 {
     public int doorNumber;
     public bool opened;

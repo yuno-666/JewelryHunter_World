@@ -17,6 +17,7 @@ public class GoalController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            //BossEntranceが管理しているクリア帳簿をtrueに更新
             BossEntrance.stagesClear[GameManager.currentDoorNumber] = true;
         }
 

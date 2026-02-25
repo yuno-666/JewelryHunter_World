@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyController : MonoBehaviour
 {
@@ -9,9 +10,10 @@ public class EnemyController : MonoBehaviour
     bool onGround = false;              // 地面フラグ
     float time = 0;
 
+    //体力管理
     public float enemyLife = 3;             // 敵の体力
     bool inDamage;                 // ダメージ管理フラグ
-
+    //ダメージ管理
     Rigidbody2D rbody;            // 死亡演出のため
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,7 +25,6 @@ public class EnemyController : MonoBehaviour
         }
         rbody = GetComponent<Rigidbody2D>(); // Rigidbody2Dを取得
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -65,25 +66,26 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
     void FixedUpdate()
     {
-        if (onGround)
+        if (enemyLife > 0)
         {
-            // 速度を更新する
-            // Rigidbody2D を取ってくる
-            Rigidbody2D rbody = GetComponent<Rigidbody2D>();
-            if (isToRight)
+            if (onGround)
             {
-                rbody.linearVelocity = new Vector2(speed, rbody.linearVelocity.y);
-            }
-            else
-            {
-                rbody.linearVelocity = new Vector2(-speed, rbody.linearVelocity.y);
+                // 速度を更新する
+                // Rigidbody2D を取ってくる
+                Rigidbody2D rbody = GetComponent<Rigidbody2D>();
+                if (isToRight)
+                {
+                    rbody.linearVelocity = new Vector2(speed, rbody.linearVelocity.y);
+                }
+                else
+                {
+                    rbody.linearVelocity = new Vector2(-speed, rbody.linearVelocity.y);
+                }
             }
         }
     }
-
     // 接触
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -100,7 +102,6 @@ public class EnemyController : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (!inDamage)
         {
             //ぶつかった相手がArrowだったら
@@ -110,28 +111,30 @@ public class EnemyController : MonoBehaviour
                 ArrowController arrowCnt = collision.gameObject.GetComponent<ArrowController>();
                 //相手の変数Attackpower分体力を減らす
                 enemyLife -= arrowCnt.attackPower;
+
+                rbody.linearVelocity = new Vector2(0, 0);
+                Vector3 v = (transform.position - collision.transform.position).normalized;
+                rbody.AddForce(new Vector2(v.x * 4, v.y * 4), ForceMode2D.Impulse);
                 inDamage = true; //ダメージ管理フラグをtrueにする
                                  //0.25秒後にフラグをおろす
                 Invoke("DamageEnd", 0.25f);
 
                 if (enemyLife <= 0)//死亡
                 {
+                    //死の音を鳴らす
+                    SoundManager.currentSoundManager.PlaySE(SEType.Enemykilled);
 
-                    rbody.linearVelocity = Vector2.zero; //動きを止める
                     GetComponent<CircleCollider2D>().enabled = false;
+                    rbody.linearVelocity = Vector2.zero; //動きを止める
                     rbody.AddForce(new Vector2(0, 3), ForceMode2D.Impulse);
                     Destroy(gameObject, 0.3f);
                 }
             }
         }
-
     }
     void DamageEnd()
     {
         inDamage = false; //ダメージフラグをもどす
-        if (enemyLife <= 0)
-        {
-            GetComponent<SpriteRenderer>().enabled = false; //スプライトを消す
-        }
+            GetComponent<SpriteRenderer>().enabled = true; //スプライトを消す
     }
 }

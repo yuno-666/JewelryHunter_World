@@ -94,7 +94,10 @@ public class PlayerController : MonoBehaviour
 
     void ShootArrow()
     {
+        //矢を放つ音を鳴らす
+        SoundManager.currentSoundManager.PlaySE(SEType.Shoot);
         GameManager.arrows--; //矢の数を減らす
+
         Quaternion r;//回転の3軸の値
         //Playerの絵が右向き
         if (transform.localScale.x > 0)
@@ -261,6 +264,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.tag == "ScoreItem")
         {
+            //アイテムゲットの音を鳴らす
+            SoundManager.currentSoundManager.PlaySE(SEType.ItemGet);
             // スコアアイテム
             ScoreItem item = collision.gameObject.GetComponent<ScoreItem>();  // ScoreItemを得る			
             score = item.itemdeta.value;                // スコアを得る
@@ -338,6 +343,8 @@ public class PlayerController : MonoBehaviour
             playerLife -= 1;//体力減少
             if (playerLife > 0)//まだゲームオーバーじゃなければ
             {
+                //ダメージの音を鳴らす
+                SoundManager.currentSoundManager.PlaySE(SEType.GetDamage);
                 //相手と反対方向にノックバック
                 rbody.linearVelocity = new Vector2(0, 0);
                 Vector3 v = (transform.position - target.transform.position).normalized;

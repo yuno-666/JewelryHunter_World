@@ -71,6 +71,9 @@ public class BossController : MonoBehaviour
                 //‘Ì—Í‚ª‚È‚­‚È‚Á‚½‚çŽ€
                 if (hp <= 0)
                 {
+                    //boss‚ÌŽ€‚Ì‰¹‚ð–Â‚ç‚·
+                    SoundManager.currentSoundManager.PlaySE(SEType.BossKilled);
+
                     //Boss@Collider2‚ÂŽ‚Á‚Ä‚¢‚é‚Ì‚Å‚ ‚é•ª‚¾‚¯ƒQƒbƒg‚µ‚Ä”z—ñ‚ÉŠi”[
                     CircleCollider2D[] colliders = GetComponents<CircleCollider2D>();
                     colliders[0].enabled = false;
